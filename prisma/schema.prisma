@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+// Users allowed into the badge panel. Removing one does not delete their badges.
+model AllowedUser {
+  id        String   @id @db.VarChar(20) // Discord user ID
+  isAdmin    Boolean  @default(false)
+  badgeLimit Int      @default(5) // badges + pending new-badge requests
+  createdAt DateTime @default(now())
+}
+
+model Badge {
+  id       Int            @id @default(autoincrement())
+  userId   String         @db.VarChar(20)
+  tooltip  String         @db.VarChar(255)
+  badge    String         @db.VarChar(512) // public URL, served as-is in /badges.json
+  position Int
+  requests BadgeRequest[]
+
+  @@index([userId, position])
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+// badgeId null = new badge, set = replace that badge's tooltip/image.
+model BadgeRequest {
+  id         Int           @id @default(autoincrement())
+  userId     String        @db.VarChar(20)
+  badgeId    Int?
+  badgeRef   Badge?        @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+  tooltip    String        @db.VarChar(255)
+  image      String        @db.VarChar(512) // pending file name (outside public dir) until approved
+  status     RequestStatus @default(PENDING)
+  reviewedBy String?       @db.VarChar(20)
+  createdAt  DateTime      @default(now())
+  reviewedAt DateTime?
+
+  @@index([status, createdAt])
+  @@index([userId])
+}

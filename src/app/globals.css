@@ -1,0 +1,171 @@
+@import "tailwindcss";
+
+/* Dark, minimal. Brand: violet #6c1beb (primary actions, selection, data), red #ed1b22 (destructive
+   actions). Type Albert Sans. The full violet goes on small marks, its dark tints on areas.
+   Every text tier stays at 4.5:1 or more on --bg and --panel. */
+
+@theme inline {
+  --font-sans: var(--font-albert);
+  --color-ground: var(--bg);
+  --color-surface: var(--surface);
+  --color-panel: var(--panel);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-rule: var(--rule);
+  --color-control: var(--control);
+  --color-accent: var(--accent);
+  --color-accent-50: var(--accent-50);
+  --color-accent-100: var(--accent-100);
+  --color-accent-200: var(--accent-200);
+  --color-accent-dark: var(--accent-dark);
+  --color-brand-red: var(--red);
+  --color-negative: var(--negative);
+  --color-positive: var(--positive);
+  --color-warn-bg: var(--warn-bg);
+  --color-warn-ink: var(--warn-ink);
+  --color-pos-bg: var(--pos-bg);
+  --color-neg-bg: var(--neg-bg);
+}
+
+:root {
+  color-scheme: dark;
+  --bg: #0c0c10;
+  --surface: #18181f;
+  --panel: #121217;
+  --ink: #f2f2f5;
+  --muted: #9a9aa6;
+  --accent: #6c1beb;
+  --accent-ink: #ffffff;
+  --accent-hover: #5a10cf;
+  /* the ladder on dark: deep violet tints for areas, a light violet for text on them */
+  --accent-50: #1a1328;
+  --accent-100: #261a3f;
+  --accent-200: #4a2b8c;
+  --accent-dark: #c2a2ff;
+  --red: #ed1b22;
+  /* lines in three steps */
+  --line: #23232c;
+  --rule: #1b1b22;
+  --control: #34343f;
+  /* status: a hue on a dark tint of itself */
+  --positive: #4ccf86;
+  --pos-bg: #10261a;
+  --negative: #ff5c61;
+  --neg-bg: #2c1214;
+  --warn-ink: #f2c45a;
+  --warn-bg: #2a2110;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-albert), system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-dark);
+  outline-offset: 3px;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+@layer components {
+/* ---------- app screens ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background-color 150ms var(--ease-out), transform 120ms var(--ease-out);
+  &:active {
+    transform: scale(0.97);
+  }
+  &:disabled {
+    opacity: 0.55;
+    pointer-events: none;
+  }
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+  &:hover {
+    background: var(--accent-hover);
+  }
+}
+
+.btn-ghost {
+  background: var(--panel);
+  color: var(--ink);
+  border: 1px solid var(--control);
+  &:hover {
+    background: var(--surface);
+  }
+}
+
+.btn-quiet {
+  color: var(--muted);
+  &:hover {
+    background: var(--rule);
+    color: var(--ink);
+  }
+}
+
+.field {
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--control);
+  background: var(--panel);
+  padding: 0 12px;
+  font-size: 14px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 150ms;
+  &:focus {
+    border-color: var(--accent);
+  }
+  &::placeholder {
+    color: #85858f;
+  }
+}
+
+.panel {
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.pill {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+}
