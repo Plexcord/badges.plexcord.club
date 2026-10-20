@@ -22,6 +22,14 @@ const nextConfig: NextConfig = {
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
         ],
       },
+      // Fetched by the client mod; only Discord (stable, canary, ptb) may read it from a browser.
+      // Set here, not in the route, so error responses carry it too.
+      { source: "/badges.json", headers: [{ key: "Vary", value: "Origin" }] },
+      {
+        source: "/badges.json",
+        has: [{ type: "header", key: "origin", value: "(?<origin>https://(?:canary\\.|ptb\\.)?discord\\.com)" }],
+        headers: [{ key: "Access-Control-Allow-Origin", value: ":origin" }],
+      },
     ];
   },
   turbopack: {
